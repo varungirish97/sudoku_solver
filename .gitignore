@@ -10,7 +10,7 @@ build/
 **/sudoku
 
 # Ignore VSCode settings if not project-specific
-#.vscode/
+.vscode/
 
 # Uncomment the line below to keep useful VSCode configs
 !.vscode/launch.json
