@@ -1,0 +1,17 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore build artifacts
+*.o
+*.out
+*.exe
+*.dSYM/
+build/
+**/sudoku
+
+# Ignore VSCode settings if not project-specific
+#.vscode/
+
+# Uncomment the line below to keep useful VSCode configs
+!.vscode/launch.json
+!.vscode/tasks.json
