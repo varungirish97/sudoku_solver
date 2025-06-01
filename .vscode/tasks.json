@@ -9,6 +9,7 @@
                 "-std=c++11",
                 "-g",
                 "sudoku.cpp",
+                "puzzle.cpp",
                 "-o",
                 "sudoku"
             ],
