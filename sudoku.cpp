@@ -1,9 +1,11 @@
-#include "puzzle.cpp"
+#include "puzzle.h"
 
+const int NUM_ROWS      =   9;
+const int NUM_COLUMNS   =   9;
 
 int main()
 {
-    std::vector<std::vector<int>> Puzzle = {
+    std::vector<std::vector<int>> puzzle = {
                                                 {0,0,0,     0,0,0,      0,0,0},
                                                 {0,0,0,     0,0,0,      0,0,0},
                                                 {0,0,0,     0,0,0,      0,0,0},
@@ -14,8 +16,8 @@ int main()
                                                 {0,0,0,     0,0,0,      0,0,0},
                                                 {0,0,0,     0,0,0,      0,0,0}
                                             };
-    printPuzzle(Puzzle);
-
+    Puzzle myPuzzle(puzzle);
+    myPuzzle.printPuzzle();
 
     return 0;
 }
