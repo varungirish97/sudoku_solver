@@ -1,8 +1,5 @@
 #include "puzzle.h"
 
-//extern const int NUM_ROWS;
-//extern const int NUM_COLUMNS;
-
 Puzzle::Puzzle(std::vector<std::vector<int>> sudoku)
 {
     puzzle_board = std::vector<std::vector<int>> (9, std::vector<int>(9,0));
@@ -10,18 +7,13 @@ Puzzle::Puzzle(std::vector<std::vector<int>> sudoku)
     makeGrids();
 }
 
+/* Create 9 grids with references to the original puzzle board */
 void Puzzle::makeGrids()
 {
     /* Resize the grids vector */
     grids.resize(9);
     for(int a = 0; a < 9; a++)
-    {
-        grids[a].resize(3);
-        for(int b = 0; b < 3; b++)
-        {
-            grids[a][b].resize(3);
-        }
-    }
+        grids[a].resize(9);
 
     /* Logic to copy references to the puzzle board into the newly created grids */
     for(int row = 0; row < 3; row++)
@@ -29,11 +21,13 @@ void Puzzle::makeGrids()
         for(int column = 0; column < 3; column++)
         {
             int gridIdx = row * 3 + column;
+            int grid_vector_idx = 0;
             for(int i = 0; i < 3; i++)
             {
                 for(int j = 0; j < 3; j++)
                 {
-                    grids[gridIdx][i][j] = &puzzle_board[row * 3 + i][column * 3 + j];
+                    grids[gridIdx][grid_vector_idx] = &puzzle_board[row * 3 + i][column * 3 + j];
+                    grid_vector_idx += 1;
                 }
             }
         }
@@ -45,6 +39,14 @@ int Puzzle::getGridIdx(int row, int column)
     int gridRow = row / 3;
     int gridCol = column / 3;
     return gridRow * 3 + gridCol;
+}
+
+void Puzzle::printGrid(int gridIdx)
+{
+    for(int idx = 0; idx < 9; idx++)
+    {
+        std::cout << *grids[gridIdx][idx] << " ";
+    }
 }
 
 void Puzzle::loadPuzzle(std::vector<std::vector<int>> sudoku)
@@ -81,6 +83,7 @@ void Puzzle::printPuzzle()
         i +=1;
     }
     std::cout << " -----------------------"<< std::endl;
+    std::cout << "       " << std::endl;
 }
 
 bool Puzzle::isValidEntry(int row, int column, int num)
@@ -89,6 +92,7 @@ bool Puzzle::isValidEntry(int row, int column, int num)
     1. num should not be present in the same row
     2. num should not be present in the same column
     3. num should not be present in the same grid */
+    
     /* ROW CHECK */
     for(int c = 0; c < 9; c++)
     {
@@ -107,7 +111,7 @@ bool Puzzle::isValidEntry(int row, int column, int num)
     int gridIdx = getGridIdx(row, column);
     for(int i = 0; i < 9; i++)
     {
-        if(grids[gridIdx][i] == num)
+        if(*grids[gridIdx][i] == num)
             return false;
     }
     return true;
@@ -135,5 +139,24 @@ bool Puzzle::findEmptyCell(int &row, int &column)
 
 bool Puzzle::solvePuzzle()
 {
-    
+    for(int r = 0; r < 9; r++)
+    {
+        for(int c = 0; c < 9; c++)
+        {
+            if(puzzle_board[r][c] == 0)
+            {
+                for(int num = 1; num < 10; num++)
+                {
+                    if(isValidEntry(r, c, num))
+                    {
+                        puzzle_board[r][c] = num;
+                        if(solvePuzzle()) return true;
+                        puzzle_board[r][c] = 0;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true;
 }
